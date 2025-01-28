@@ -1,27 +1,35 @@
-W=800
-H=600
-love.window.setMode(W,H)
-pos = 400
-row = 0
-col = 400
-score = 0
+function love.load()
+  W=800
+  H=600
+  pos = W / 2
+  row = 0
+  col = W / 2
+  pad_width = 50
+  score = 0
+  love.window.setMode(W,H)
+end
 
-function love.draw()
-    if love.keyboard.isDown('q') and pos > 5 then
+function love.update()
+    if love.keyboard.isDown('left') and pos > pad_width then
         pos = pos - 10
     end
-    if love.keyboard.isDown('p') and pos < W-5 then
+    if love.keyboard.isDown('right') and pos < W-pad_width then
         pos = pos + 10
     end
     row = row + 5
     if row > H - 100 then
-        if pos - 10 <= col and col <= pos + 10 then
+        if pos - pad_width <= col and col <= pos + pad_width then
             score = score + 1
         end
         col = math.random(20,W-20)
         row = 0
     end
-    love.graphics.print(string.format('Score: %d',score),W/2-20,H-50)
+end
+
+function love.draw()
+    love.graphics.print('Score: ' .. score,20,H-50)
+    love.graphics.setColor(255,0,0)
     love.graphics.circle('fill',col,row,10)
-    love.graphics.rectangle('fill',pos-10,H-100,20,30)
+    love.graphics.setColor(255,255,255)
+    love.graphics.rectangle('fill',pos-pad_width,H-100,2*pad_width,30)
 end
